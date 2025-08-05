@@ -9,7 +9,13 @@
       "Bash(rm:*)",
       "Bash(poetry lock:*)",
       "Bash(git rebase:*)",
-      "Bash(poetry run python:*)"
+      "Bash(poetry run python:*)",
+      "Bash(mkdir:*)",
+      "Bash(poetry install:*)",
+      "Bash(poetry run pytest:*)",
+      "Bash(poetry run sentei-reduce:*)",
+      "Bash(poetry run sentei-choice:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }

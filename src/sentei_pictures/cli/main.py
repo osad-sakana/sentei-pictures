@@ -4,13 +4,10 @@ reduce.pyとchoice.pyを統合的に実行できます。
 """
 
 import sys
-from pathlib import Path
 
-# スクリプトのあるディレクトリをパスに追加
-sys.path.insert(0, str(Path(__file__).parent))
-
-import choice
-import reduce
+from .choice import main as choice_main
+from .input_handler import InputHandler
+from .reduce import main as reduce_main
 
 
 def print_main_menu():
@@ -38,15 +35,15 @@ def main():
         if command in ["1", "reduce"]:
             print()
             try:
-                # reduce.pyの対話型機能を呼び出し
-                input_dir, output_dir = reduce.get_user_input()
+                # reduce機能の対話型機能を呼び出し
+                input_dir, output_dir = InputHandler.get_reduce_input()
 
-                # reduce.pyのメイン処理部分を実行
-                # sys.argvを一時的に設定してreduce.main()を呼び出し
+                # reduce機能のメイン処理部分を実行
+                # sys.argvを一時的に設定してreduce_main()を呼び出し
                 original_argv = sys.argv
-                sys.argv = ["reduce.py", str(input_dir), str(output_dir)]
+                sys.argv = ["sentei-reduce", str(input_dir), str(output_dir)]
                 try:
-                    reduce.main()
+                    reduce_main()
                 finally:
                     sys.argv = original_argv
 
@@ -62,19 +59,19 @@ def main():
         elif command in ["2", "choice"]:
             print()
             try:
-                # choice.pyの対話型機能を呼び出し
-                original_dir, output_dir, selected_dir = choice.get_user_input()
+                # choice機能の対話型機能を呼び出し
+                original_dir, output_dir, selected_dir = InputHandler.get_choice_input()
 
-                # choice.pyのメイン処理部分を実行
+                # choice機能のメイン処理部分を実行
                 original_argv = sys.argv
                 sys.argv = [
-                    "choice.py",
+                    "sentei-choice",
                     str(original_dir),
                     str(output_dir),
                     str(selected_dir),
                 ]
                 try:
-                    choice.main()
+                    choice_main()
                 finally:
                     sys.argv = original_argv
 

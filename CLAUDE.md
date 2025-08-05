@@ -7,19 +7,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Development
 
 ```bash
-# Install dependencies
+# Install dependencies (including dev dependencies)
+poetry install --with dev
+
+# Install package in development mode
 poetry install
 
 # 統合メニュー（推奨）
-poetry run python main.py
+sentei
 
-# 対話型で個別実行
-poetry run python reduce.py
-poetry run python choice.py
+# 個別コマンド実行
+sentei-reduce
+sentei-choice
 
-# コマンドライン引数で実行（従来通り）
-poetry run python reduce.py <input_directory> <output_directory>
-poetry run python choice.py <original_directory> <output_directory> <selected_directory>
+# コマンドライン引数で実行
+sentei-reduce <input_directory> <output_directory>
+sentei-choice <original_directory> <output_directory> <selected_directory>
+
+# テスト実行
+poetry run pytest
+poetry run pytest --cov=sentei_pictures
+
+# コード品質チェック
+poetry run pre-commit run --all-files
 ```
 
 ### Code Quality
