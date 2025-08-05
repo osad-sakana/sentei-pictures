@@ -18,7 +18,11 @@
       "Bash(git commit:*)",
       "Bash(poetry run sentei:*)",
       "Bash(timeout 3s poetry run sentei)",
-      "Bash(poetry run pip show:*)"
+      "Bash(poetry run pip show:*)",
+      "Bash(poetry build)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(git stash:*)"
     ],
     "deny": []
   }
