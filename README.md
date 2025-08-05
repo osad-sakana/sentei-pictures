@@ -180,17 +180,3 @@ sentei-pictures/
 ## ライセンス
 
 MIT License - 詳細は [LICENSE](LICENSE) ファイルを参照してください。
-
-## 貢献
-
-Issues、Pull Requestsを歓迎します。大きな変更を行う前に、まずissueで相談してください。
-
-## 変更履歴
-
-### v0.1.0
-
-- 初期リリース
-- reduce機能（画像軽量化）
-- choice機能（選定画像コピー）
-- 対話型・コマンドライン両対応
-- 統合メニュー
