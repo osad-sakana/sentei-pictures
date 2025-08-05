@@ -11,11 +11,14 @@ from pathlib import Path
 def print_usage():
     """使用方法を表示"""
     print("使用方法:")
+    print("  1. 対話型: poetry run python choice.py")
     print(
-        "  poetry run python choice.py <本体の画像があるパス> <選定後のファイルを保存するパス> <選定したファイルがあるパス>"
+        "  2. コマンドライン: poetry run python choice.py "
+        "<本体の画像があるパス> <選定後のファイルを保存するパス> <選定したファイルがあるパス>"
     )
     print("")
     print("例:")
+    print("  poetry run python choice.py")
     print(
         "  poetry run python choice.py /path/to/original /path/to/selected "
         "/path/to/reduced"
@@ -68,27 +71,83 @@ def find_matching_file(filename, search_dir):
     return None
 
 
+def get_user_input():
+    """ユーザーから入力を取得"""
+    print("=== 選定画像コピースクリプト ===")
+    print()
+
+    while True:
+        original_path = input("本体の画像があるパスを入力: ").strip()
+        if not original_path:
+            print("パスを入力してください。")
+            continue
+
+        original_dir = Path(original_path)
+        if not original_dir.exists():
+            print(f"エラー: 指定されたパスが存在しません: {original_path}")
+            continue
+        if not original_dir.is_dir():
+            print(f"エラー: 指定されたパスはディレクトリではありません: {original_path}")
+            continue
+        break
+
+    while True:
+        output_path = input("選定後のファイルを保存するパスを入力: ").strip()
+        if not output_path:
+            print("パスを入力してください。")
+            continue
+
+        output_dir = Path(output_path)
+        try:
+            output_dir.mkdir(parents=True, exist_ok=True)
+            break
+        except Exception as e:
+            print(f"エラー: 出力ディレクトリを作成できません: {e}")
+            continue
+
+    while True:
+        selected_path = input("選定したファイルがあるパスを入力: ").strip()
+        if not selected_path:
+            print("パスを入力してください。")
+            continue
+
+        selected_dir = Path(selected_path)
+        if not selected_dir.exists():
+            print(f"エラー: 指定されたパスが存在しません: {selected_path}")
+            continue
+        if not selected_dir.is_dir():
+            print(f"エラー: 指定されたパスはディレクトリではありません: {selected_path}")
+            continue
+        break
+
+    return original_dir, output_dir, selected_dir
+
+
 def main():
-    if len(sys.argv) != 4:
+    # コマンドライン引数がある場合は従来通り
+    if len(sys.argv) == 4:
+        original_dir = Path(sys.argv[1])
+        output_dir = Path(sys.argv[2])
+        selected_dir = Path(sys.argv[3])
+
+        # ディレクトリの存在チェック
+        if not original_dir.exists() or not original_dir.is_dir():
+            print(f"エラー: 本体の画像ディレクトリが存在しません: {original_dir}")
+            sys.exit(1)
+
+        if not selected_dir.exists() or not selected_dir.is_dir():
+            print(f"エラー: 選定したファイルのディレクトリが存在しません: {selected_dir}")
+            sys.exit(1)
+
+        # 出力ディレクトリの作成
+        output_dir.mkdir(parents=True, exist_ok=True)
+    elif len(sys.argv) == 1:
+        # 引数がない場合は対話型
+        original_dir, output_dir, selected_dir = get_user_input()
+    else:
         print("エラー: 引数の数が正しくありません。")
         print_usage()
         sys.exit(1)
-
-    original_dir = Path(sys.argv[1])
-    output_dir = Path(sys.argv[2])
-    selected_dir = Path(sys.argv[3])
-
-    # ディレクトリの存在チェック
-    if not original_dir.exists() or not original_dir.is_dir():
-        print(f"エラー: 本体の画像ディレクトリが存在しません: {original_dir}")
-        sys.exit(1)
-
-    if not selected_dir.exists() or not selected_dir.is_dir():
-        print(f"エラー: 選定したファイルのディレクトリが存在しません: {selected_dir}")
-        sys.exit(1)
-
-    # 出力ディレクトリの作成
-    output_dir.mkdir(parents=True, exist_ok=True)
 
     # 選定されたファイルを取得
     selected_files = []

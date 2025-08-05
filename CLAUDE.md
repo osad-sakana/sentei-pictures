@@ -10,10 +10,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Install dependencies
 poetry install
 
-# Run image reduction script
-poetry run python reduce.py <input_directory> <output_directory>
+# 統合メニュー（推奨）
+poetry run python main.py
 
-# Run image selection/copy script
+# 対話型で個別実行
+poetry run python reduce.py
+poetry run python choice.py
+
+# コマンドライン引数で実行（従来通り）
+poetry run python reduce.py <input_directory> <output_directory>
 poetry run python choice.py <original_directory> <output_directory> <selected_directory>
 ```
 

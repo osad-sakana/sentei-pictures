@@ -12,9 +12,11 @@ from PIL import Image
 def print_usage():
     """使用方法を表示"""
     print("使用方法:")
-    print("  poetry run python reduce.py <画像があるパス> <軽量化した画像を保存するパス>")
+    print("  1. 対話型: poetry run python reduce.py")
+    print("  2. コマンドライン: poetry run python reduce.py <画像があるパス> <軽量化した画像を保存するパス>")
     print("")
     print("例:")
+    print("  poetry run python reduce.py")
     print("  poetry run python reduce.py /path/to/original /path/to/reduced")
 
 
@@ -66,22 +68,64 @@ def reduce_image_quality(input_path, output_path, max_long_side=3000, quality=87
         return False
 
 
+def get_user_input():
+    """ユーザーから入力を取得"""
+    print("=== 画像軽量化スクリプト ===")
+    print()
+
+    while True:
+        input_path = input("ソースファイルのパスを入力: ").strip()
+        if not input_path:
+            print("パスを入力してください。")
+            continue
+
+        input_dir = Path(input_path)
+        if not input_dir.exists():
+            print(f"エラー: 指定されたパスが存在しません: {input_path}")
+            continue
+        if not input_dir.is_dir():
+            print(f"エラー: 指定されたパスはディレクトリではありません: {input_path}")
+            continue
+        break
+
+    while True:
+        output_path = input("出力先のパスを入力: ").strip()
+        if not output_path:
+            print("パスを入力してください。")
+            continue
+
+        output_dir = Path(output_path)
+        # 出力ディレクトリは存在しなくても作成するので、親ディレクトリの存在確認のみ
+        try:
+            output_dir.mkdir(parents=True, exist_ok=True)
+            break
+        except Exception as e:
+            print(f"エラー: 出力ディレクトリを作成できません: {e}")
+            continue
+
+    return input_dir, output_dir
+
+
 def main():
-    if len(sys.argv) != 3:
+    # コマンドライン引数がある場合は従来通り
+    if len(sys.argv) == 3:
+        input_dir = Path(sys.argv[1])
+        output_dir = Path(sys.argv[2])
+
+        # 入力ディレクトリの存在チェック
+        if not input_dir.exists() or not input_dir.is_dir():
+            print(f"エラー: 入力ディレクトリが存在しません: {input_dir}")
+            sys.exit(1)
+
+        # 出力ディレクトリの作成
+        output_dir.mkdir(parents=True, exist_ok=True)
+    elif len(sys.argv) == 1:
+        # 引数がない場合は対話型
+        input_dir, output_dir = get_user_input()
+    else:
         print("エラー: 引数の数が正しくありません。")
         print_usage()
         sys.exit(1)
-
-    input_dir = Path(sys.argv[1])
-    output_dir = Path(sys.argv[2])
-
-    # 入力ディレクトリの存在チェック
-    if not input_dir.exists() or not input_dir.is_dir():
-        print(f"エラー: 入力ディレクトリが存在しません: {input_dir}")
-        sys.exit(1)
-
-    # 出力ディレクトリの作成
-    output_dir.mkdir(parents=True, exist_ok=True)
 
     # JPEGファイルを検索
     jpeg_files = []
