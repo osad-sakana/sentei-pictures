@@ -15,7 +15,10 @@
       "Bash(poetry run pytest:*)",
       "Bash(poetry run sentei-reduce:*)",
       "Bash(poetry run sentei-choice:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(poetry run sentei:*)",
+      "Bash(timeout 3s poetry run sentei)",
+      "Bash(poetry run pip show:*)"
     ],
     "deny": []
   }
