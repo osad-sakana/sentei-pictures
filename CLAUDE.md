@@ -16,6 +16,9 @@ poetry install
 # 統合メニュー（推奨）
 sentei
 
+# GUI版（グラフィカルユーザーインターフェース）
+sentei-gui
+
 # 個別コマンド実行
 sentei-reduce
 sentei-choice

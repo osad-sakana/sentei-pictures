@@ -34,6 +34,7 @@ pytest-cov = "^5.0.0"
 sentei = "sentei_pictures.cli.main:main"
 sentei-reduce = "sentei_pictures.cli.reduce:main"
 sentei-choice = "sentei_pictures.cli.choice:main"
+sentei-gui = "sentei_pictures.gui.gui_main:main"
 
 [build-system]
 requires = ["poetry-core"]

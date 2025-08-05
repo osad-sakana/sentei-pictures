@@ -22,7 +22,8 @@
       "Bash(poetry build)",
       "Bash(git pull:*)",
       "Bash(git push:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(python:*)"
     ],
     "deny": []
   }
